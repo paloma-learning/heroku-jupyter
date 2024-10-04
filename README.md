@@ -81,15 +81,6 @@ If you are really sure that you do not want a password protected notebook and se
 heroku config:set JUPYTER_NOTEBOOK_PASSWORD_DISABLED=DangerZone! -a <your-app-name>
 ```
 
-
-
-
-### 3. CloudFoundry
-- Clone this repository
-- Create a postgres database service with name `jupyter-db`
-- Deploy using `cf push`
-- Set `JUPYTER_NOTEBOOK_PASSWORD` using `cf set-env`. Do not forget to restart application.
-
 ## Environment / Config variables
 - `JUPYTER_NOTEBOOK_PASSWORD`: Set password for notebooks
 - `JUPYTER_NOTEBOOK_PASSWORD_DISABLED`: Set to `DangerZone!` to disable password protection
