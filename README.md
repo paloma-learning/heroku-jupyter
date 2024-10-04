@@ -2,71 +2,94 @@
 
 Use this application to deploy [Jupyter Notebook](https://jupyter.org/) to
 heroku or CloudFoundry. If a postgres database is available,
-[pgcontents](https://github.com/quantopian/pgcontents) is used as notebook
+[pgcontents](https://github.com/quantopian/pgcontents) is used to power persistant notebook
 storage.
 
-## Quick start
+If you want to customize your app, feel free to fork this repository.
 
-Jupyter will not start, if the environment variable `JUPYTER_NOTEBOOK_PASSWORD`
-was not set.
+## Quick start - Installation instructions
 
-If you want to customize your app, easiest is to fork this repository.
+The fastest & easiest way to get started is to choose option 1 below: automatic deployment on Heroku.
 
-## Installation instructions
+### 1. Heroku - Automatic Deployment (faster & easier)
 
-### heroku - automatic deployment
-
+First, click on this handy dandy button:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-If you forked this repository, you can link it to your heroku app afterwards.
+Go through the form that the ^^ above button leads you to, and choose an app name & password. Then click the purple 'deploy app' button at the bottom of the form.
 
-### heroku - manual deployment
+It will take a couple of minutes for your app to deploy, and then you'll be able to click links to 1) manage your app, and 2) view your live, interactive jupyter notebook running on a heroku dyno (with persistant storage!).
+
+Note: If you choose later to fork this repository, you can link your new repo to your heroku app afterwards.
+
+### 2. Heroku - Manual Deployment (does the same thing as 1, but nice for learning / understanding)
 
 Push this repository to your app or fork this repository on github and link your
 repository to your heroku app.
 
-Use the [heroku-buildpack-conda](https://github.com/pl31/heroku-buildpack-conda):
+To create a new app, run:
 ```
-$ heroku buildpacks:set https://github.com/pl31/heroku-buildpack-conda.git -a <your_app>
+export APP_NAME=<your_app_name>
+export JUPYTER_NOTEBOOK_PASSWORD=<your_jupyter_password>
+
+# if you don't have git:
+brew install git
+# clone this repo (swap with your forked repo if you wish):
+# git clone git@github.com:heroku/heroku-jupyter.git # TODO uncomment if this is fork lands to original heroku repo!
+git clone git@github.com:hillarysanders/heroku-jupyter.git
+cd heroku-jupyter
+
+# Create a new app (or use an existing one you've made)
+heroku create $APP_NAME
+
+# Set the stack:
+heroku stack:set heroku-24 --app $APP_NAME
+
+# Set your required config variable:
+heroku config:set JUPYTER_NOTEBOOK_PASSWORD=$JUPYTER_NOTEBOOK_PASSWORD -a $APP_NAME
+
+# Specify the buildpacks it should use:
+heroku buildpacks:add --index 1 heroku-community/apt -a $APP_NAME
+heroku buildpacks:add --index 2 heroku/python -a $APP_NAME
+
+# Attach the postgres addon:
+heroku addons:create heroku-postgresql:essential-1 --app $APP_NAME
+
+# Connect your app to the repo:
+heroku git:remote -a $APP_NAME
+
+# deploy
+git push heroku main
+
+# Follow the URL from ^^ to view your app! To view logs, run `heroku logs --tail -a $APP_NAME`
 ```
 
-Jupyter notebook will not start until the environment variable
-`JUPYTER_NOTEBOOK_PASSWORD` is set. Use a good password:
+Optional useful commands:
 ```
-$ heroku config:set JUPYTER_NOTEBOOK_PASSWORD=<your_passwd> -a <your_app>
+# show config variables:
+heroku config --app $APP_NAME
+
+# ssh into build
+heroku run bash --app $APP_NAME
+
+# view logs
+heroku logs --tail -a jupyter-notebook
 ```
 
-If you are really sure, that you do not want a password protected notebook
-server, you can set `JUPYTER_NOTEBOOK_PASSWORD_DISABLED` to `DangerZone!`.
+If you are really sure that you do not want a password protected notebook and server (not recommended), you can set `JUPYTER_NOTEBOOK_PASSWORD_DISABLED` to `DangerZone!`:
+```
+heroku config:set JUPYTER_NOTEBOOK_PASSWORD_DISABLED=DangerZone! -a <your-app-name>
+```
 
-## Environment variables
-
+## Environment / Config variables
 - `JUPYTER_NOTEBOOK_PASSWORD`: Set password for notebooks
-- `JUPYTER_NOTEBOOK_PASSWORD_DISABLED`: Set to `DangerZone!` to disable password
-  protection
-- `JUPYTER_NOTEBOOK_ARGS`: Additional command line args passed to
-  `jupyter notebook`; e.g. get a more verbose logging using `--debug`
+- `JUPYTER_NOTEBOOK_PASSWORD_DISABLED`: Set to `DangerZone!` to disable password protection
+- `JUPYTER_NOTEBOOK_ARGS`: Additional command line args passed to `jupyter notebook`; e.g. get a more verbose logging using `--debug`
+
 
 ## Python version
 
-If you want to use a special python version, you should set it in your environment.yml:
-
+If you want to use a special python version, you should set it in your runtime.txt, for example:
 ```
-name: root
-dependencies:
-  - python=2.7
-  - ...
+python-3.10.6
 ```
-
-## Environments
-
-*Experimental feature - in work*
-
-- Parametrize default environment using ENVIRONMENT_YML
-- Add additional kernel(s) to jupyter installation (Python2 and Python3 in parallel)
-- Allow changes and experimental features without damaging defult configuration
-
-| Deployment | Features | Description |
-| ---------- | -------- | ----------- |
-| [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?env[ENVIRONMENT_YML]=environments/default.yml) | Python3, IPython5 | Default Environment
-| [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?env[ENVIRONMENT_YML]=environments/multi_kernel.yml&env[ADDITIONAL_ENVIRONMENT_YML]=environments/kernel/python2/python2.yml) | Python3, IPython5 + Python2 | Default Environment + Python2
