@@ -35,8 +35,7 @@ export JUPYTER_NOTEBOOK_PASSWORD=<your_jupyter_password>
 # if you don't have git:
 brew install git
 # clone this repo (swap with your forked repo if you wish):
-# git clone git@github.com:heroku/heroku-jupyter.git # TODO uncomment if this is fork lands to original heroku repo!
-git clone git@github.com:hillarysanders/heroku-jupyter.git
+git clone git@github.com:heroku/heroku-jupyter.git
 cd heroku-jupyter
 
 # Create a new app (or use an existing one you've made)
