@@ -72,12 +72,12 @@ heroku config --app $APP_NAME
 heroku run bash --app $APP_NAME
 
 # view logs
-heroku logs --tail -a jupyter-notebook
+heroku logs --tail -a $APP_NAME
 ```
 
 If you are really sure that you do not want a password protected notebook and server (not recommended), you can set `JUPYTER_NOTEBOOK_PASSWORD_DISABLED` to `DangerZone!`:
 ```
-heroku config:set JUPYTER_NOTEBOOK_PASSWORD_DISABLED=DangerZone! -a <your-app-name>
+heroku config:set JUPYTER_NOTEBOOK_PASSWORD_DISABLED=DangerZone! -a $APP_NAME
 ```
 
 ## Environment / Config variables
