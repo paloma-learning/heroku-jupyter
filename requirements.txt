@@ -1,5 +1,4 @@
 ipython==7.32.0 # https://github.com/NetApp/netapp-dataops-toolkit/issues/13
-# ipython==8.27.0 # fixed I think?
 notebook==6.5.7 # latest 6.* version
 git+https://github.com/quantopian/pgcontents.git # https://github.com/quantopian/pgcontents/issues/80
 # pgcontents==0.6
