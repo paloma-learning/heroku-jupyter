@@ -21,7 +21,16 @@ export PS1='\[\033[01;34m\]\w\[\033[00m\]\$'
 echo "Starting Jupyter ${JUPYTER_NOTEBOOK_OR_LAB}"
 # NOTE: With allow_origin='*', anyone with the URL and password can potentially access your notebook,
 # so be careful w/ the URL and password. Don't put sensitive data up here.
-jupyter $JUPYTER_NOTEBOOK_OR_LAB \
+
+# Determine the correct command
+if [ "$JUPYTER_NOTEBOOK_OR_LAB" = "jupyterhub-singleuser" ]; then
+    CMD="jupyterhub-singleuser"
+else
+    CMD="jupyter $JUPYTER_NOTEBOOK_OR_LAB"
+fi
+
+# Start Jupyter
+$CMD \
     --no-browser --ip=0.0.0.0 --port=$PORT \
     --ServerApp.allow_origin='*' --ServerApp.allow_credentials=True \
-    $JUPYTER_NOTEBOOK_ARGS \
+    $JUPYTER_NOTEBOOK_ARGS
