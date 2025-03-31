@@ -14,7 +14,7 @@ The fastest & easiest way to get started is to choose option 1 below: automatic 
 ### 1. Heroku - Automatic Deployment (faster & easier)
 
 First, click on this handy dandy button:
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://www.heroku.com/deploy?template=https://github.com/heroku-reference-apps/heroku-jupyter)
 
 Go through the form that the ^^ above button leads you to, and choose an app name, password, and whether to run Jupyter notebook or Jupyter lab. Then click the purple 'deploy app' button at the bottom of the form.
 
@@ -37,7 +37,7 @@ export JUPYTER_NOTEBOOK_OR_LAB=<notebook_or_lab>
 # if you don't have git:
 brew install git
 # clone this repo (swap with your forked repo if you wish):
-git clone git@github.com:heroku/heroku-jupyter.git
+git clone git@github.com:heroku-reference-apps/heroku-jupyter.git
 cd heroku-jupyter
 
 # Create a new app (or use an existing one you've made)
