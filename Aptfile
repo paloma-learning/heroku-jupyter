@@ -1,2 +1,6 @@
 git
+gcc-13
+g++-13
 gcc
+build-essential
+python3-dev
